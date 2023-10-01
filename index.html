@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>HTML 5 Boilerplate</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div>
+        <div class="header">Etch-A-Sketch</div>
+        <button>Clear</button>
+        <div class="slideContainer">
+            <input type="range" min="16" max="64" step="1" value="16" id="myRange" class="slider" />
+            <div id="value">Value: 16</div>
+        </div>
+        <div class="grid-container"></div>
+    </div>
+
+    <script>
+        const g_container = document.querySelector('.grid-container');
+        const slider = document.getElementById("myRange");
+        const valueDisplay = document.getElementById("value");
+        const btn = document.querySelector('button');
+        const DEFAULTSIZE = 16;
+        let currentSize = DEFAULTSIZE;
+
+        function createGrid(size) {
+            for (let i = 0; i < size; i++) {
+                for (let j = 0; j < size; j++) {
+                    const x = document.createElement('div');
+                    x.classList.add('grid-item');
+                    const flexValue = `0 0 calc((100% / ${size}) - 0px)`;
+                    x.style.flex = flexValue;
+                    g_container.appendChild(x);
+                    x.addEventListener('mouseover', () => {
+                        x.classList.add('hover');
+                    });
+                }
+            }
+        }
+
+        function clearGrid() {
+            const gridContainer = document.querySelector('.grid-container');
+            gridContainer.innerHTML = '';
+        }
+
+        btn.addEventListener('click', () => {
+            clearGrid();
+            createGrid(currentSize);
+        });
+
+        slider.addEventListener("input", () => {
+            currentSize = slider.value;
+            valueDisplay.textContent = "Value: " + currentSize;
+            clearGrid();
+            createGrid(currentSize);
+        });
+
+        createGrid(currentSize);
+    </script>
+</body>
+</html>
